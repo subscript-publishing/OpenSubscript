@@ -1,0 +1,18 @@
+\\define defaults\\
+    ||inline enclosures||
+        |for-all: $...$ as \math[inline]{...}
+        |for-all: `...` as \code[inline]{...}
+
+\cmd-name
+\cmd-name[…attributes…]
+\cmd-name[…attributes…]{…}
+\cmd-name {…}
+\cmd-name {…} {…}
+\cmd-name {…} @labeled-argument {…}
+\cmd-name {…} @labeled-argument-type labeled-argument {…}
+
+\cmd-name: …Inline Content Shorthand…
+\cmd-name: …Inline Content Shorthand…
+    @labeled-argument {…}
+\cmd-name: …Inline Content Shorthand…
+    @labeled-argument-kind labeled-argument {…}
