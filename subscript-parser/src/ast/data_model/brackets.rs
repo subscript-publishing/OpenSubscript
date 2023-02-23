@@ -117,54 +117,58 @@ impl StreamBinder for ParseInCurlyBrackets {
     type Err = ();
     fn bind_to<'a>(self, stream: Stream<'a>) -> Output<'a, Self::Ok<'a>, Self::Err> {
         let (open, close) = (InCurlyBrackets::OPEN_CHAR, InCurlyBrackets::CLOSE_CHAR);
-        stream
-            .apply_binder(UnconsSpec::must_match(open))
-            .ok_and(|stream| stream.apply_binder(ParseRootAst::default()))
-            .ok_and(|stream| stream.apply_binder(UnconsSpec::must_match(close)))
-            .ok_map(|((open, content), close)| -> InCurlyBrackets {
-                InCurlyBrackets { open, content, close }
-            })
+        // stream
+        //     .apply_binder(UnconsSpec::must_match(open))
+        //     .ok_and(|stream| stream.apply_binder(ParseRootAst::default()))
+        //     .ok_and(|stream| stream.apply_binder(UnconsSpec::must_match(close)))
+        //     .ok_map(|((open, content), close)| -> InCurlyBrackets {
+        //         InCurlyBrackets { open, content, close }
+        //     })
+        unimplemented!()
     }
 }
 impl StreamBinder for ParseInSquareBrackets {
     type Ok<'a> = InSquareBrackets<'a>;
     type Err = ();
     fn bind_to<'a>(self, stream: Stream<'a>) -> Output<'a, Self::Ok<'a>, Self::Err> {
-        let (open, close) = (InSquareBrackets::OPEN_CHAR, InSquareBrackets::CLOSE_CHAR);
-        stream
-            .apply_binder(UnconsSpec::must_match(open))
-            .ok_and(|stream| stream.apply_binder(ParseRootAst::default()))
-            .ok_and(|stream| stream.apply_binder(UnconsSpec::must_match(close)))
-            .ok_map(|((open, content), close)| -> InSquareBrackets {
-                InSquareBrackets { open, content, close }
-            })
+        // let (open, close) = (InSquareBrackets::OPEN_CHAR, InSquareBrackets::CLOSE_CHAR);
+        // stream
+        //     .apply_binder(UnconsSpec::must_match(open))
+        //     .ok_and(|stream| stream.apply_binder(ParseRootAst::default()))
+        //     .ok_and(|stream| stream.apply_binder(UnconsSpec::must_match(close)))
+        //     .ok_map(|((open, content), close)| -> InSquareBrackets {
+        //         InSquareBrackets { open, content, close }
+        //     })
+        unimplemented!()
     }
 }
 impl StreamBinder for ParseInRoundBrackets {
     type Ok<'a> = InRoundBrackets<'a>;
     type Err = ();
     fn bind_to<'a>(self, stream: Stream<'a>) -> Output<'a, Self::Ok<'a>, Self::Err> {
-        let (open, close) = (InRoundBrackets::OPEN_CHAR, InRoundBrackets::CLOSE_CHAR);
-        stream
-            .apply_binder(UnconsSpec::must_match(open))
-            .ok_and(|stream| stream.apply_binder(ParseRootAst::default()))
-            .ok_and(|stream| stream.apply_binder(UnconsSpec::must_match(close)))
-            .ok_map(|((open, content), close)| -> InRoundBrackets {
-                InRoundBrackets { open, content, close }
-            })
+        // let (open, close) = (InRoundBrackets::OPEN_CHAR, InRoundBrackets::CLOSE_CHAR);
+        // stream
+        //     .apply_binder(UnconsSpec::must_match(open))
+        //     .ok_and(|stream| stream.apply_binder(ParseRootAst::default()))
+        //     .ok_and(|stream| stream.apply_binder(UnconsSpec::must_match(close)))
+        //     .ok_map(|((open, content), close)| -> InRoundBrackets {
+        //         InRoundBrackets { open, content, close }
+        //     })
+        unimplemented!()
     }
 }
 impl StreamBinder for ParseInAngleBrackets {
     type Ok<'a> = InAngleBrackets<'a>;
     type Err = ();
     fn bind_to<'a>(self, stream: Stream<'a>) -> Output<'a, Self::Ok<'a>, Self::Err> {
-        let (open, close) = (InAngleBrackets::OPEN_CHAR, InAngleBrackets::CLOSE_CHAR);
-        stream
-            .apply_binder(UnconsSpec::must_match(open))
-            .ok_and(|stream| stream.apply_binder(ParseRootAst::default()))
-            .ok_and(|stream| stream.apply_binder(UnconsSpec::must_match(close)))
-            .ok_map(|((open, content), close)| -> InAngleBrackets {
-                InAngleBrackets { open, content, close }
-            })
+        // let (open, close) = (InAngleBrackets::OPEN_CHAR, InAngleBrackets::CLOSE_CHAR);
+        // stream
+        //     .apply_binder(UnconsSpec::must_match(open))
+        //     .ok_and(|stream| stream.apply_binder(ParseRootAst::default()))
+        //     .ok_and(|stream| stream.apply_binder(UnconsSpec::must_match(close)))
+        //     .ok_map(|((open, content), close)| -> InAngleBrackets {
+        //         InAngleBrackets { open, content, close }
+        //     })
+        unimplemented!()
     }
 }

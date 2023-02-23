@@ -1,4 +1,4 @@
-use crate::{stream::{IndexedChar, Stream}, token::TokenView, syntax::{parts::{InSquareBrackets, InCurlyBrackets, LabeledEnclosure}, RootAst}, binders::StreamBinder, output::Output};
+use crate::{stream::{IndexedChar, Stream}, token::TokenView, syntax::{parts::{InSquareBrackets, InCurlyBrackets, LabeledEnclosure}, RootAst}, binders::StreamBinder, output::Output, character::UnconsSpec};
 
 //―――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――
 // TODO
@@ -29,6 +29,10 @@ impl StreamBinder for ParseBackslashCmd {
     type Ok<'a> = BackslashCmd<'a>;
     type Err = ();
     fn bind_to<'a>(self, stream: Stream<'a>) -> Output<'a, Self::Ok<'a>, Self::Err> {
+        // let results = stream.static_threesome((
+        //     &|stream: Stream<'a>| stream.apply_binder(UnconsSpec::must_match('\\')),
+        //     // &|stream: Stream<'a>| stream.apply_binder(InSquareBrackets::),
+        // ));
         unimplemented!()
     }
 }

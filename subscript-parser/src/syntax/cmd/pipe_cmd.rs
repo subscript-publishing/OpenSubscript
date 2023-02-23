@@ -3,6 +3,7 @@ use crate::{stream::{IndexedChar, Stream}, token::TokenView, syntax::{parts::{In
 //―――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――
 // TODO
 //―――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――
+#[derive(Debug, Clone)]
 pub struct PipeCmdIdentifier<'a> {
     pub pipe_char: IndexedChar,
     pub identifier: TokenView<'a>,
@@ -12,6 +13,7 @@ pub struct PipeCmdIdentifier<'a> {
 //―――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――
 // TODO
 //―――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――
+#[derive(Debug, Clone)]
 pub struct PipeCmd<'a> {
     pub identifier: PipeCmdIdentifier<'a>,
     pub attributes: Option<InSquareBrackets<RootAst<'a>>>,

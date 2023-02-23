@@ -1,11 +1,12 @@
 use crate::{binders::StreamBinder, stream::Stream, output::Output};
 
-use super::{cmd::PipeCmd, plain_text::PlainText};
+use super::{cmd::PipeCmd, plain_text::{PlainText, ParsePlainText}};
 
 
 //―――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――
 // TODO
 //―――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――
+#[derive(Debug, Clone)]
 pub enum RootAst<'a> {
     BackslashCmd(Box<PipeCmd<'a>>),
     PipeCmd(Box<PipeCmd<'a>>),
@@ -23,7 +24,9 @@ impl StreamBinder for ParseRootAst {
     type Ok<'a> = RootAst<'a>;
     type Err = ();
     fn bind_to<'a>(self, stream: Stream<'a>) -> Output<'a, Self::Ok<'a>, Self::Err> {
-        unimplemented!()
+        stream.static_alternatives(&[
+            &|stream| stream.apply_binder(ParsePlainText::default()).ok_map(|x| RootAst::PlainText(x))
+        ])
     }
 }
 

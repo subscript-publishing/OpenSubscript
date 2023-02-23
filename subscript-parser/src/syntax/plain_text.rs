@@ -4,6 +4,7 @@ use crate::{token::TokenView, binders::StreamBinder, stream::Stream, output::Out
 //―――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――
 // TODO
 //―――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――
+#[derive(Debug, Clone)]
 pub struct PlainText<'a> {
     pub content: TokenView<'a>
 }
@@ -11,7 +12,7 @@ pub struct PlainText<'a> {
 //―――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――
 // TODO
 //―――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――
-#[derive(Default)]
+#[derive(Default, Clone, Copy)]
 pub struct ParsePlainText {}
 
 impl StreamBinder for ParsePlainText {

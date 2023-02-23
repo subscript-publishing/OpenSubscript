@@ -219,6 +219,12 @@ pub struct UnconsSpec<Predicate=()> {
     pub filter: Option<Predicate>,
 }
 
+impl Default for UnconsSpec {
+    fn default() -> Self {
+        UnconsSpec {filter: None}
+    }
+}
+
 impl UnconsSpec<DynamicCharPredicate> {
     pub fn must_match(char: char) -> Self {
         let predicate = DynamicCharPredicate::new(move |view| {

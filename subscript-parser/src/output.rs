@@ -1,3 +1,5 @@
+use either::Either;
+
 use crate::stream::{Stream, Cursor};
 
 //―――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――
@@ -31,6 +33,9 @@ impl<'a, A> IO<'a, A> {
         let IO { value: b, context } = f(context);
         IO { context, value: (a, b) }
     }
+    pub fn set_override_context(self, new: Stream<'a>) -> IO<'a, A> {
+        IO { context: new, value: self.value }
+    }
 }
 
 impl<'a> IO<'a> {
@@ -56,6 +61,14 @@ impl<'a, Ok, Err> Output<'a, Ok, Err> {
     pub fn success(io: IO<'a, Ok>) -> Self { Self::Success(io) }
     pub fn failure(io: IO<'a, Err>) -> Self { Self::Failure(io) }
 }
+
+
+//―――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――
+// BASICS
+//―――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――
+// impl<'a, Ok, Err> Output<'a, Ok, Err> {
+    
+// }
 
 //―――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――
 // TRANSFORM MATCH-RELATED COMPONENTS
@@ -117,22 +130,17 @@ impl<'a, Ok, Err> Output<'a, Ok, Err> {
 // SEQUENCING
 //―――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――
 impl<'a, A, Err> Output<'a, A, Err> {
-    pub fn ok_and<B>(self, f: impl FnOnce(Stream<'a>) -> Output<'a, B, Err>) -> Output<'a, (A, B), Err> {
-        match self {
-            Output::Success(IO { value: a, context }) => match f(context) {
-                Output::Success(IO { value: b, context }) => Output::Success(IO { value: (a, b), context }),
-                Output::Failure(x) => Output::Failure(x),
-            },
-            Output::Failure(x) => Output::Failure(x),
-        }
-    }
-    pub fn ok_and2<B, C>(
-        self,
-        f: impl FnOnce(Stream<'a>) -> Output<'a, B, Err>,
-        g: impl FnOnce(Stream<'a>) -> Output<'a, C, Err>
-    ) -> Output<'a, (A, B, C), Err> {
-        self.ok_and(f).ok_and(g).ok_map(|((a, b), c)| (a, b, c))
-    }
+    // pub fn ok_and<B>(self, f: impl FnOnce(Stream<'a>) -> Output<'a, B, Err>) -> Output<'a, (A, B), Err> {
+        
+    // }
+    // pub fn ok_and2<B, C>(
+    //     self,
+    //     f: impl FnOnce(Stream<'a>) -> Output<'a, B, Err>,
+    //     g: impl FnOnce(Stream<'a>) -> Output<'a, C, Err>
+    // ) -> Output<'a, (A, B, C), Err> {
+    //     // self.ok_and(f).ok_and(g).ok_map(|((a, b), c)| (a, b, c))
+    //     unimplemented!()
+    // }
 }
 
 //―――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――
@@ -164,6 +172,18 @@ impl<'a, A, Err> Output<'a, A, Err> {
                 Output::Success(io)
             }
             Output::Failure(x) => Output::Failure(x),
+        }
+    }
+    pub fn inspect(self, f: impl FnOnce(&IO<'a, Result<&A, &Err>>) -> ()) -> Self {
+        match self {
+            Output::Success(IO { context, value }) => {
+                f(&IO { context, value: Ok(&value) });
+                Output::Success(IO { context, value })
+            }
+            Output::Failure(IO { context, value }) => {
+                f(&IO { context, value: Err(&value) });
+                Output::Failure(IO { context, value })
+            }
         }
     }
 }

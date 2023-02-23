@@ -5,6 +5,7 @@ use super::InSomeEnclosure;
 //―――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――
 // TODO
 //―――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――
+#[derive(Debug, Clone)]
 pub enum LabelIdentifier<'a> {
     Single {
         at_sign: IndexedChar,
@@ -20,6 +21,7 @@ pub enum LabelIdentifier<'a> {
 //―――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――
 // TODO
 //―――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――
+#[derive(Debug, Clone)]
 pub struct LabeledEnclosure<'a> {
     pub identifier: LabelIdentifier<'a>,
     pub enclosure: InSomeEnclosure<RootAst<'a>>

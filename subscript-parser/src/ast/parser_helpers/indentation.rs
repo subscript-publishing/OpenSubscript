@@ -152,33 +152,34 @@ impl StreamBinder for ParseIndentedList {
     type Ok<'a> = IndentedList<'a>;
     type Err = ();
     fn bind_to<'a>(self, stream: Stream<'a>) -> Output<'a, Self::Ok<'a>, Self::Err> {
-        let start_cursor = stream.cursor;
-        stream
-            .apply_binder(TakeWhileSpec::IDENTIFIER)
-            .ok_and(|stream| stream.apply_binder(UnconsSpec::must_match(':')))
-            .ok_and(|stream| stream.apply_binder(UnconsSpec::with_filter(StaticCharPredicate::IS_NEWLINE)))
-            .ok_and(|stream| stream.apply_compute_binder(ComputeIndentLevel{parse_start_newline: false}))
-            .ok_map(|(((a, b), c), d)| { (a, b, c, d) })
-            .ok_and_then(|IO { context, value: (a, b, _, indent_info) }| -> Output<'a, Self::Ok<'a>, Self::Err> {
-                context
-                    .parse_many_sequenced(
-                        ParseManySequenced{
-                            start_parser: ParseIndentedStart::new(
-                                start_cursor.clone(),
-                                indent_info.clone(),
-                            ),
-                            indent_body: ParseIndentedBody::new(
-                                start_cursor.clone(),
-                                indent_info.clone(),
-                            ),
-                            sep_by: UnconsSpec::with_filter(StaticCharPredicate::IS_NEWLINE),
-                        }
-                    )
-                    .ok_map(|xs| {
-                        let xs = xs.into_iter().map(|(a, b, _)| (a, b)).collect::<Vec<_>>();
-                        IndentedList { header: a, colon: b, items: xs }
-                    })
-            })
+        // let start_cursor = stream.cursor;
+        // stream
+        //     .apply_binder(TakeWhileSpec::IDENTIFIER)
+        //     .ok_and(|stream| stream.apply_binder(UnconsSpec::must_match(':')))
+        //     .ok_and(|stream| stream.apply_binder(UnconsSpec::with_filter(StaticCharPredicate::IS_NEWLINE)))
+        //     .ok_and(|stream| stream.apply_compute_binder(ComputeIndentLevel{parse_start_newline: false}))
+        //     .ok_map(|(((a, b), c), d)| { (a, b, c, d) })
+        //     .ok_and_then(|IO { context, value: (a, b, _, indent_info) }| -> Output<'a, Self::Ok<'a>, Self::Err> {
+        //         context
+        //             .parse_many_sequenced(
+        //                 ParseManySequenced{
+        //                     start_parser: ParseIndentedStart::new(
+        //                         start_cursor.clone(),
+        //                         indent_info.clone(),
+        //                     ),
+        //                     indent_body: ParseIndentedBody::new(
+        //                         start_cursor.clone(),
+        //                         indent_info.clone(),
+        //                     ),
+        //                     sep_by: UnconsSpec::with_filter(StaticCharPredicate::IS_NEWLINE),
+        //                 }
+        //             )
+        //             .ok_map(|xs| {
+        //                 let xs = xs.into_iter().map(|(a, b, _)| (a, b)).collect::<Vec<_>>();
+        //                 IndentedList { header: a, colon: b, items: xs }
+        //             })
+        //     })
+        unimplemented!()
     }
 }
 

@@ -1,4 +1,4 @@
-use std::fmt::Display;
+use std::fmt::{Display, Debug};
 
 use crate::{binders::StreamBinder, output::{Output, IO}};
 
@@ -93,15 +93,9 @@ impl<'a> Stream<'a> {
 // PARSER HELPERS - ALTERNATIVE
 //―――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――
 impl<'a> Stream<'a> {
-    // pub fn two_options<T: StreamBinder>(self) {
-
-    // }
-    // pub fn alternatives<T: StreamBinder, const N: usize>(self, options: [(); N]) -> Output<'a, T::Ok<'a>, T::Err> {
-    //     unimplemented!()
-    // }
-}
-
-impl<'a> Stream<'a> {
+    /// NOTE:
+    /// The lifetimes aren’t explicitly set to static but in practice it’ll
+    /// pretty much always have to be static. 
     pub fn static_alternatives<'f, Ok, Err: Default>(
         self,
         options: &'f [&'f dyn Fn(Stream<'a>) -> Output<'a, Ok, Err>]
@@ -112,6 +106,128 @@ impl<'a> Stream<'a> {
             }
         }
         Output::failure(IO { context: self, value: Err::default() })
+    }
+}
+
+//―――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――
+// PARSER HELPERS - SEQUENCING
+//―――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――
+impl<'a> Stream<'a> {
+    /// Sequentially executes the given parsers in sequence threading the
+    /// returned stream throughout (i.e. back into the next parser), either
+    /// returning the final stream (and the resulting product), or the
+    /// original stream if any one parser fails. 
+    /// 
+    /// NOTE:
+    /// The lifetimes aren’t explicitly set to static but in practice it’ll
+    /// pretty much always have to be static (good luck otherwise). 
+    pub fn static_homogeneous_sequence<'f, Ok, Err: Default>(
+        self,
+        sequence: &'f [&'f dyn Fn(Stream<'a>) -> Output<'a, Ok, Err>]
+    ) -> Output<'a, Vec<Ok>, Err> {
+        let origional = self.clone();
+        let mut results: Vec<Ok> = Default::default();
+        let mut context: Stream<'a> = self;
+        for next in sequence {
+            match next(context.clone()) {
+                Output::Success(IO { context: next, value }) => {
+                    results.push(value);
+                    context = next;
+                }
+                Output::Failure(IO { context: _, value }) => {
+                    return Output::failure(IO { context: origional, value });
+                }
+            }
+        }
+        Output::success(IO { context, value: results })
+    }
+    /// Sequentially executes two (2) parsers in sequence threading the
+    /// returned stream throughout (i.e. back into the next parser),
+    /// either returning the final stream (and the resulting product),
+    /// or the original stream if any one parser fails. 
+    /// 
+    /// NOTE:
+    /// The lifetimes aren’t explicitly set to static but in practice it’ll
+    /// pretty much always have to be static (good luck otherwise). 
+    pub fn static_twosome<'f, A, B, Err: Default>(
+        self,
+        (first, second): (
+            &'f dyn Fn(Stream<'a>) -> Output<'a, A, Err>,
+            &'f dyn Fn(Stream<'a>) -> Output<'a, B, Err>,
+        ),
+    ) -> Output<'a, (A, B), Err> {
+        let origional = self.clone();
+        match first(self) {
+            Output::Success(IO { value: a, context }) => match second(context) {
+                Output::Success(IO { value: b, context }) => Output::Success(IO { value: (a, b), context }),
+                Output::Failure(io) => Output::Failure(io.set_override_context(origional)),
+            },
+            Output::Failure(io) => Output::Failure(io.set_override_context(origional)),
+        }
+    }
+    /// Sequentially executes three (3) parsers in sequence threading the
+    /// returned stream throughout (i.e. back into the next parser),
+    /// either returning the final stream (and the resulting product),
+    /// or the original stream if any one parser fails. 
+    /// 
+    /// NOTE:
+    /// The lifetimes aren’t explicitly set to static but in practice it’ll
+    /// pretty much always have to be static (good luck otherwise). 
+    pub fn static_threesome<'f, A, B, C, Err: Default>(
+        self,
+        (first, second, third): (
+            &'f dyn Fn(Stream<'a>) -> Output<'a, A, Err>,
+            &'f dyn Fn(Stream<'a>) -> Output<'a, B, Err>,
+            &'f dyn Fn(Stream<'a>) -> Output<'a, C, Err>,
+        ),
+    ) -> Output<'a, (A, B, C), Err> where A: Debug, B: Debug, C: Debug, Err: Debug {
+        let origional = self.clone();
+        match first(self) {
+            Output::Success(IO { value: a, context }) => match second(context) {
+                Output::Success(IO { value: b, context }) => match third(context) {
+                    Output::Success(IO { value: c, context }) => {
+                        Output::Success(IO { value: (a, b, c), context })
+                    },
+                    Output::Failure(io) => Output::Failure(io.set_override_context(origional)),
+                },
+                Output::Failure(io) => Output::Failure(io.set_override_context(origional)),
+            },
+            Output::Failure(io) => Output::Failure(io.set_override_context(origional)),
+        }
+    }
+    /// Sequentially executes four (4) parsers in sequence threading the
+    /// returned stream throughout (i.e. back into the next parser),
+    /// either returning the final stream (and the resulting product),
+    /// or the original stream if any one parser fails. 
+    /// 
+    /// NOTE:
+    /// The lifetimes aren’t explicitly set to static but in practice it’ll
+    /// pretty much always have to be static. 
+    pub fn static_foursome<'f, A, B, C, D, Err: Default>(
+        self,
+        (first, second, third, fourth): (
+            &'f dyn Fn(Stream<'a>) -> Output<'a, A, Err>,
+            &'f dyn Fn(Stream<'a>) -> Output<'a, B, Err>,
+            &'f dyn Fn(Stream<'a>) -> Output<'a, C, Err>,
+            &'f dyn Fn(Stream<'a>) -> Output<'a, D, Err>,
+        ),
+    ) -> Output<'a, (A, B, C, D), Err> {
+        let origional = self.clone();
+        match first(self) {
+            Output::Success(IO { value: a, context }) => match second(context) {
+                Output::Success(IO { value: b, context }) => match third(context) {
+                    Output::Success(IO { value: c, context }) => match fourth(context) {
+                        Output::Success(IO { value: d, context }) => {
+                            Output::Success(IO { value: (a, b, c, d), context })
+                        },
+                        Output::Failure(io) => Output::Failure(io.set_override_context(origional)),
+                    },
+                    Output::Failure(io) => Output::Failure(io.set_override_context(origional)),
+                },
+                Output::Failure(io) => Output::Failure(io.set_override_context(origional)),
+            },
+            Output::Failure(io) => Output::Failure(io.set_override_context(origional)),
+        }
     }
 }
 
