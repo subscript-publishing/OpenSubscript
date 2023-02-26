@@ -1,5 +1,5 @@
 [package]
-name = "subscript-parser"
+name = "zipper-framework"
 version = "0.1.0"
 edition = "2021"
 
@@ -7,7 +7,5 @@ edition = "2021"
 
 [dependencies]
 either = "1.8.1"
+serde_json = "1.0.93"
 itertools = "0.10.5"
-tree-formatter = {path = "../tree-formatter"}
-subscript-tokenizer = {path = "../subscript-tokenizer"}
-

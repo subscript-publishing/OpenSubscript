@@ -1,0 +1,27 @@
+\name
+\name {…}
+\name {…} {…}
+\name {…} @labeled-argument {…}
+\name {…} @labeled-argument-type labeled-argument {…}
+
+\\list of math as equations\\ {
+    \item{
+        …Inline Content…
+    }
+    \item{
+        …Inline Content…
+    }
+    \item{
+        …Inline Content…
+    }
+    \item{
+        …Inline Content…
+    }
+    \item{
+        …Inline Content…
+    }
+    \item{
+        …Inline Content…
+    }
+}
+

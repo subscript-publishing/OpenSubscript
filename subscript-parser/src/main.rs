@@ -1,38 +1,18 @@
-use ast::ParseInSomeEnclosure;
-use character::UnconsSpec;
-use stream::{IndexedChar, Cursor, Stream};
-use syntax::{ParseRootAst, parts::{ParseAstNodeInSomeEnclosure, ParseAstNodeInCurlyBrackets}, plain_text::ParsePlainText};
+#![allow(unused)]
+// use subscript_tokenizer::pipeline;
 
-pub mod character;
-pub mod cursor;
-pub mod stream;
-pub mod output;
-pub mod binders;
-pub mod token;
-pub mod ast;
-pub mod syntax;
+use subscript_tokenizer::token_tree::token_tree_dev1;
 
 fn main() {
-    // let source_code = include_str!("../samples/misc/random2.txt");
-    let source_code = "{Hello World}";
-    let source_slice = source_code.chars().enumerate().map(|(ix, c)| IndexedChar::new(ix, c)).collect::<Vec<_>>();
-    let source_stream = Stream {
-        slice: &source_slice[..],
-        cursor: Cursor { index: 0, column: 0, line: 0 },
-    };
-    // let op = ParseIndentedAsteriskItem {
-    //     column_level: 4,
-    // };
-    // let op = ParseRootAst::default();
-    // let op = ParseIndentedList::default();
-    let op = ParseAstNodeInCurlyBrackets::default();
-    let output = source_stream.apply_binder(op);
-    // let op = ParsePlainText::default();
-    // let output = source_stream
-    //     .static_threesome((
-    //         &|stream| stream.apply_binder(UnconsSpec::must_match('{')),
-    //         &|stream| stream.apply_binder(op),
-    //         &|stream| stream.apply_binder(UnconsSpec::must_match('}')),
-    //     ));
-    println!("{output:#?}")
+    // println!("Hello, world!");
+    let source_code = include_str!("../samples/input/file1.txt");
+    // let source_code = include_str!("../samples/misc/file1.txt");
+    // let output = subscript_tokenizer::pipeline::src_input::string_input_pipeline(source_code);
+    // let output = subscript_tokenizer::pipeline::fold_to_tree::fold_units_into_binary_token_tree(output.into_vec());
+    // let output = subscript_tokenizer::pipeline::fold_to_tree::debug_print(source_code);
+    // let _ = subscript_tokenizer::pipeline::src_input::debug_print(source_code);
+    // let _ = subscript_tokenizer::pipeline::tokenizer::run_tokenizer(source_code);
+    // subscript_tokenizer
+    // println!("{:#?}", token_tree);
+    token_tree_dev1(source_code);
 }

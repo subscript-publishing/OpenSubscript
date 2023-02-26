@@ -1,0 +1,11 @@
+\h1{…}
+
+\section-cmd-begin-indent:
+    * …
+    * …
+    * …
+
+\\list of math as equations\\
+    * x = a
+    * y = b
+    * z = c

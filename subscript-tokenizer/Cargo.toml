@@ -1,5 +1,5 @@
 [package]
-name = "subscript-parser"
+name = "subscript-tokenizer"
 version = "0.1.0"
 edition = "2021"
 
@@ -9,5 +9,3 @@ edition = "2021"
 either = "1.8.1"
 itertools = "0.10.5"
 tree-formatter = {path = "../tree-formatter"}
-subscript-tokenizer = {path = "../subscript-tokenizer"}
-
