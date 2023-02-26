@@ -1,11 +1,5 @@
 [workspace]
 members = [
-    "tree-formatter",
-    "zipper-framework",
-    "parser-zipper",
-    "parser",
-    "subscript-parser-old",
-    "subscript-parser",
     "subscript-tokenizer",
     "subscript-compiler",
 ]
