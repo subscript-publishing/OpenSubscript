@@ -1,4 +1,4 @@
-use crate::{token_tree::{TokenTree, Fragment, SomeInsertionSiteRef, SomeInsertionSite, ActiveInsertionSite, FinalizedSite}, SomeIdentifier1, SomeIdentifier2, SomeSectionHeader, Newline, Space, SrcString, SomePrimitive, binary_token_tree::OpenEnclosure};
+use crate::{token_tree::{TokenTree, Fragment, SomeInsertionSiteRef, SomeInsertionSite, ActiveInsertionSite, FinalizedSite}, SomeIdentifier1, SomeIdentifier2, SomeSectionHeader, Newline, Space, SrcString, SomePrimitive};
 
 pub trait TTMutVisitor {
     fn some_root(&self, node: &mut TokenTree) {}

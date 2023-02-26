@@ -3,7 +3,7 @@ use std::collections::VecDeque;
 use either::Either::{self, Left, Right};
 use itertools::Itertools;
 use tree_formatter::{ToDisplayTree, DisplayTree};
-use crate::{SrcString, Newline, SrcChar, SrcUnit, MutState, Space, SrcGroup, SomePrimitive, SomeBracket, SomeOpenBracket, SomeCloseBracket, SomeIdentifier1, SomeIdentifier2, SomeSectionHeader};
+use crate::{SrcString, Newline, SrcChar, MutState, Space, SrcGroup, SomePrimitive, SomeBracket, SomeOpenBracket, SomeCloseBracket, SomeIdentifier1, SomeIdentifier2, SomeSectionHeader};
 
 //―――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――
 // SPECIAL
