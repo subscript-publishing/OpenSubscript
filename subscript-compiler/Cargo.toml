@@ -9,4 +9,4 @@ edition = "2021"
 either = "1.8.1"
 itertools = "0.10.5"
 tree-formatter = {path = "../tree-formatter"}
-subscript-tokenizer = {path = "../subscript-tokenizer"}
+subscript-parser = {path = "../subscript-parser"}

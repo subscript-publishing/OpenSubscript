@@ -1,5 +1,5 @@
 [workspace]
 members = [
-    "subscript-tokenizer",
+    "subscript-parser",
     "subscript-compiler",
 ]
